@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperShop68.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SuperShop68
 {
@@ -30,6 +25,26 @@ namespace SuperShop68
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            // cria o objeto generalizado e deita fora da memória.
+            // o objeto desaparece e não pode ser mais usado
+            // só corre uma vez
+            services.AddTransient<SeedDb>();
+            
+
+            // o objeto quando for criado nunca vai ser destruido
+            // e vai estar sempre disponivel em memória
+            // durante o ciclo de vida todo da aplicação
+            // é pouco usado porque ocupa muita memória.
+
+            //services.AddSingleton
+
+            // vai gerar as dependencias
+            // qualquer objeto que é criado ou serviço aqui,
+            // fica criado e está instanciado
+            // quando eu criar outro novo tipo de objeto
+            // ele apaga esse anterior e sobrepoe um novo
+            // é o mais utilizado
+            //services.AddScoped
 
             services.AddControllersWithViews();
         }
